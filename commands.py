@@ -21,21 +21,24 @@ def botCommands():
         butn4 = types.KeyboardButton('Обратная связь')
 
         markup.row(butn1, butn2, butn3, butn4)
-        reply_markup=markup
+        bot.send_message(message.chat.id, "Выбери из кнопок внизу",reply_markup=markup)
         bot.register_next_step_handler(message, on_click)
     def on_click(message):
         if message.text == 'О нас':
             about(message)
+            start(message)
 
         elif message.text == 'Адреса доставок':
             adress(message)
+            start(message)
 
         elif message.text == 'Меню':
             menu1(message)
 
         elif message.text == 'Обратная связь':
             feedback(message)
-        bot.register_next_step_handler(message, start)
+            start(message)
+
 
 
     @bot.message_handler(commands=["adress"])
@@ -73,7 +76,7 @@ def botCommands():
         if message.text.lower() == 'привет' :
             bot.send_message(message.chat.id, f"Привет, {message.from_user.first_name}")
         else:
-            bot.send_message(message.chat.id, f"Тебе нужно выбрать одну из кнопок :)")
+            bot.send_message(message.chat.id, f"Выбери одну из кнопок внизу", start(message))
 
 
 
