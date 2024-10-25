@@ -1,7 +1,11 @@
 import telebot
 import webbrowser
+
+from telebot import types
+
 import tgKey
 import menu
+
 bot = telebot.TeleBot(tgKey.priv())
 def botCommands():
     @bot.message_handler(commands = ['about'])
@@ -18,7 +22,24 @@ def botCommands():
 
     @bot.message_handler(commands=["menu"])
     def main(message):
-        bot.send_message(message.chat.id, menu.menuRolls(message), menu.menuPizza(message), menu.menuDrinks(message), menu.menuSause(message) )
+        markup = types.InlineKeyboardMarkup()
+        markup.add(types.InlineKeyboardButton('Роллы', callback_data = 'rolls'))
+        markup.add(types.InlineKeyboardButton('Пицца', callback_data='pizza'))
+        markup.add(types.InlineKeyboardButton('Напитки', callback_data='drinks'))
+        markup.add(types.InlineKeyboardButton('Соусы', callback_data='sause'))
+
+        bot.reply_to(message, "Выберите раздел :" , reply_markup = markup)
+    @bot.callback_query_handler(func=lambda callback: True)
+    def callback_message(callback):
+        if callback.data == 'rolls':
+            bot.send_message(callback.message.chat.id, menu.menuRolls())
+        if callback.data == 'pizza':
+            bot.send_message(callback.message.chat.id, menu.menuPizza())
+        if callback.data == 'drinks':
+            bot.send_message(callback.message.chat.id, menu.menuDrinks())
+        if callback.data == 'sause':
+            bot.send_message(callback.message.chat.id, menu.menuSause())
+
 
     @bot.message_handler(commands=["feedback"])
     def main(message):
