@@ -1,6 +1,7 @@
 import telebot
 import webbrowser
 import tgKey
+import menu
 bot = telebot.TeleBot(tgKey.priv())
 def botCommands():
     @bot.message_handler(commands = ['about'])
@@ -17,7 +18,7 @@ def botCommands():
 
     @bot.message_handler(commands=["menu"])
     def main(message):
-        bot.send_message(message.chat.id," Бла-бла - 300р\n Бла-бла - 300р\n Бла-бла - 300р\n Бла-бла - 300р\n")
+        bot.send_message(message.chat.id, menu.menuRolls(message), menu.menuPizza(message), menu.menuDrinks(message), menu.menuSause(message) )
 
     @bot.message_handler(commands=["feedback"])
     def main(message):
@@ -29,5 +30,7 @@ def botCommands():
             bot.send_message(message.chat.id, f"Привет, {message.from_user.first_name}")
         else:
             bot.send_message(message.chat.id, f"Тебе нужно выбрать одну из кнопок :)")
+
+
 
     bot.polling(non_stop=True)
