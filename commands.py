@@ -21,23 +21,20 @@ def botCommands():
         butn4 = types.KeyboardButton('Обратная связь')
 
         markup.row(butn1, butn2, butn3, butn4)
-        bot.send_message(message.chat.id, "Выбери из кнопок внизу",reply_markup=markup)
+        bot.send_message(message.chat.id, f"Приветствую тебя , {message.from_user.first_name}", reply_markup=markup)
         bot.register_next_step_handler(message, on_click)
     def on_click(message):
         if message.text == 'О нас':
             about(message)
-            start(message)
 
         elif message.text == 'Адреса доставок':
             adress(message)
-            start(message)
 
         elif message.text == 'Меню':
             menu1(message)
 
         elif message.text == 'Обратная связь':
             feedback(message)
-            start(message)
 
 
 
@@ -54,7 +51,7 @@ def botCommands():
         btn4 = types.InlineKeyboardButton('Соусы', callback_data='sause')
 
         markup.row(btn1,btn2,btn3,btn4)
-        bot.reply_to(message, "Выбери нужный раздел",reply_markup = markup)
+        bot.reply_to(message, "Выбери нужный раздел меню",reply_markup = markup)
     @bot.callback_query_handler(func=lambda callback: True)
     def callback_message(callback):
         if callback.data == 'rolls':
@@ -75,9 +72,15 @@ def botCommands():
     def info(message):
         if message.text.lower() == 'привет' :
             bot.send_message(message.chat.id, f"Привет, {message.from_user.first_name}")
+        elif message.text.lower() == 'о нас':
+            about(message)
+        elif message.text.lower() == 'адреса доставок':
+            adress(message)
+        elif message.text.lower() == 'меню':
+            menu1(message)
+        elif message.text.lower() == 'обратная связь':
+            feedback(message)
         else:
-            bot.send_message(message.chat.id, f"Выбери одну из кнопок внизу", start(message))
-
-
+            bot.send_message(message.chat.id, "я тебя не понимаю((")
 
     bot.polling(non_stop=True)
